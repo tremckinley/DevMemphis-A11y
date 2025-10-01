@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live A11y Fix Demo (DevMemphis)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles based on presentation theme (Dark Blue, Purple, Green) */
+        :root {
+            --color-primary-light: #ededed;
+            /* Dark Gray/Blue for background */
+            --color-secondary: #2f2f2f;
+            /* Blue for highlights/buttons */
+            --color-text-light: #ededed;
+            --color-text-dark: #000000;
+            --color-contrast-fail: #FCA5A5;
+            /* Light Red for warnings */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-primary-light);
+            color: var(--color-text-dark);
+            line-height: 1.6;
+        }
+
+        h2 {
+            color: var(--color-secondary)
+        }
+
+        .card {
+            background-color: #d0d0d0;
+            /* Slightly lighter dark card */
+            border: 1px solid #4B5563;
+        }
+
+        .issue-box {
+            padding: 20px;
+            border-radius: 0.5rem;
+        }
+
+        /* 1. Color Contrast (Failing state) */
+        .contrast-fail {
+            color: #AAAAAA;
+            /* Low contrast light gray text */
+            background-color: #F3F4F6;
+            /* Near white background */
+            font-weight: 600;
+        }
+
+        .form-input {
+            color: darkblue;
+            padding-left: 5px;
+        }
+    </style>
+</head>
+
+<body class="p-4 sm:p-8">
+    <header class="mb-10 text-center">
+        <h1 class="text-4xl font-extrabold text-black mb-2">
+            DevMemphis Accessibility Demo
+        </h1>
+        <p class="text-lg text-gray-600">
+            Fix these six common WCAG issues by editing the HTML comments below
+        </p>
+    </header>
+
+    <main class="space-y-12 max-w-6xl mx-auto">
+
+        <!-- 1. Color Contrast Issue -->
+        <section class="card p-6 rounded-xl shadow-2xl">
+            <h2 class="text-2xl font-bold mb-4 border-b border-gray-600 pb-3">1. Color Contrast</h2>
+            <div class="rounded-md p-2">
+                <p class="text-stone-100">This text has poor contrast. It is nearly impossible for some users to read in bright
+                    light or if they have low vision.</p>
+            </div>
+            <!-- 
+            TODO: FIX A11Y HERE (Color Contrast).
+            Change the text color to a darker shade to pass WCAG AA.
+            Suggested fix: Change p element text color to black
+            -->
+        </section>
+
+        <!-- 2. Alt Text Issue -->
+        <section class="card p-6 rounded-xl shadow-2xl">
+            <h2 class="text-2xl font-bold mb-4 border-b border-gray-600 pb-3">2. Alt Text on Images</h2>
+            <div class="flex items-center justify-around space-x-4 issue-box border-none">
+                <figure class="w-[10em]">
+                    <img src="./ghost-door.png" alt="screenshot-x123.png"
+                    class="shadow-lg p-2 border-2 border-gray-500 ">
+                    <caption class="text-lg font-medium">This image is critical to understanding the site's content</caption>
+                </figure>
+                <figure class="w-[20em] text-center">
+                    <img src="spaceship-dip.png" alt="An overly stylized, high-contrast, two-dimensional graphic sticker of a classic flying saucer-shaped extraterrestrial spacecraft. The UFO is depicted in thick black outlines on a white filling, with four distinct, solid black circular portholes lining the lower cockpit dome. The ship is centered in a yellow circlular background."
+                    class="shadow-lg p-4 border-2 border-gray-500 rounded-full">
+                    <caption class="text-lg font-medium">This image of a spaceship is decorative</caption>
+                </figure>
+            </div>
+            <!-- 
+            TODO: FIX A11Y HERE (Alt Text)
+            The 'alt' attribute is empty, meaning screen readers will often skip the image or just announce "image".
+            The 'alt' attribute is unclear, meaning the screen reader will read something senseless or unhelpful. 
+            If the image does not load, neither of these are helpful to understand what should've been there.
+            Fix: Add a descriptive 'alt' attribute.
+            -->
+        </section>
+
+        <!-- 3. Semantic HTML Issue -->
+        <section class="card p-6 rounded-xl shadow-2xl">
+            <h2 class="text-2xl font-bold mb-4 border-b border-gray-600 pb-3">3. Semantic HTML (The
+                Button)</h2>
+            <h3 class="mb-4">
+                This element is a div meant to function like a button. Try pressing $\text{Enter}$ or $\text{Space}$ to
+                activate it.
+            </h3>
+            <div class="border border-black bg-blue-300" onclick="alert('Action triggered!')">
+                Proceed to Checkout (DIV)
+            </div>
+            <br><hr><br>
+            <h3 class="mb-4">
+                This element is a button. Try pressing $\text{Enter}$ or $\text{Space}$ to activate it.
+            </h3>
+            <button class="border border-black bg-green-200" onclick="alert('Action triggered!')">
+                Proceed to Checkout (Button)
+            </button>
+
+            <!-- 
+            TODO: FIX A11Y HERE (Semantic HTML)
+            Add extra style: bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg cursor-pointer max-w-xs text-center
+            A <div> element is not inherently interactive. Screen readers will not announce it as a button.
+            Fix: Replace the <div> with a native <button> element and remove the ARIA/JS needed to fake interactivity.
+            Example fix: Replace the above <div>...</div> with <button class="[tailwind classes]">Proceed to Checkout</button>
+            -->
+        </section>
+
+        <!-- 4. Keyboard Navigation Issue -->
+        <section class="card p-6 rounded-xl shadow-2xl">
+            <h2 class="text-2xl font-bold mb-4 border-b border-gray-600 pb-3">4. Keyboard Navigation
+                (Focus Ring)</h2>
+            <p class="mb-4">
+                Try pressing the $\text{Tab}$ key to move through these links. Can you tell which one has focus?
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <a href="#"
+                    class="text-black hover:font-bold p-2  rounded-md focus:outline-none bg-orange-400">
+                    Link One
+                </a>
+                <a href="#"
+                    class="text-black hover:font-bold p-2 rounded-md focus:outline-none bg-yellow-400">
+                    Link Two
+                </a>
+                <button class="bg-red-500 hover:font-bold text-black p-2 rounded-md focus:outline-none">
+                    Action Button
+                </button>
+            </div>
+            <!-- 
+            TODO: FIX A11Y HERE (Keyboard Navigation - Focus)
+            The 'focus:outline-none' Tailwind class removes the visual focus indicator.
+            Fix: Remove 'focus:outline-none' and add a clear focus style.
+            Example fix: Remove 'focus:outline-none' and add 'focus:ring-4 focus:ring-yellow-300' to the elements.
+            -->
+        </section>
+
+        <!-- 5. Links Issue -->
+        <section class="card p-6 rounded-xl shadow-2xl">
+            <h2 class="text-2xl font-bold mb-4 border-b border-gray-600 pb-3">5. Links (Context)</h2>
+            <p class="text-lg">
+                To find the WCAG checklist, <a href="https://www.w3.org/WAI/standards-guidelines/wcag/"
+                    class="text-blue-800 hover:underline">click here</a>.
+            </p>
+            <!-- 
+            TODO: FIX A11Y HERE (Links Context)
+            The link text "click here" is not descriptive when read out of context.
+            It is also only identified as a link by color
+            Fix: Rewrite the sentence to make the link text descriptive.
+            Example fix: To find the <a href="..." class="text-blue-400 hover:underline">WCAG checklist</a>, click here.
+            -->
+        </section>
+
+        <!-- 6. Forms Issue -->
+        <section class="card p-6 rounded-xl shadow-2xl">
+            <h2 class="text-2xl font-bold mb-4 border-b border-gray-600 pb-3">6. Forms (Labels)</h2>
+            <div class="form-demo max-w-sm">
+                <div class="mb-4">
+                    <p class="block font-medium mb-1">Email Address</p>
+                    <input type="email" id="email-input" placeholder="Email"
+                        class="w-full p-3 rounded-lg text-gray-900">
+                </div>
+                <button class="bg-purple-400 hover:bg-purple-600 text-black font-bold py-2 px-4 rounded-lg">
+                    Subscribe
+                </button>
+            </div>
+            <br>
+            <hr>
+            <br>
+            <h3 class="text-xl font-bold mb-4">Better Form</h3>
+            <p>Notice label functionality and inherited date picker for DOB field</p>
+            <form>
+                <label for="fname">First name:</label><br>
+                <input class="form-input" type="text" id="fname" name="fname"><br>
+                <label for="lname">Last name:</label><br>
+                <input class="form-input" type="text" id="lname" name="lname"><br>
+                <label for="dob">Date of Birth:</label><br>
+                <input class="form-input" type="date" id="dob" name="dob">
+            </form>
+            <!-- 
+            TODO: FIX A11Y HERE (Form Label)
+            The text "Email Address" is a paragraph (<p>), not a properly associated <label>.
+            Screen readers and users tapping on the text cannot focus the input.
+            Fix: Replace the <p> with a <label> that uses the 'for' attribute to match the input's 'id'.
+            Example fix: Replace <p>...</p> with <label for="email-input" class="text-gray-300 block font-medium mb-1">Email Address</label>
+            -->
+        </section>
+
+    </main>
+
+    <!-- Simple replacement for alert() that won't break the iframe -->
+    <script>
+        function alert(message) {
+            const container = document.body;
+            let alertBox = document.getElementById('custom-alert');
+
+            if (!alertBox) {
+                alertBox = document.createElement('div');
+                alertBox.id = 'custom-alert';
+                alertBox.className = 'fixed top-4 right-4 bg-purple-600 text-white p-4 rounded-lg shadow-xl transition-transform duration-300 transform translate-x-full z-50 text-base font-semibold';
+                container.appendChild(alertBox);
+            }
+
+            alertBox.textContent = message;
+            alertBox.classList.remove('translate-x-full'); // Show
+            setTimeout(() => {
+                alertBox.classList.add('translate-x-full'); // Hide
+            }, 2000);
+        }
+    </script>
+</body>
+
+</html>
